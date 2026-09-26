@@ -1,0 +1,2892 @@
+/**
+ * CHOP CHOP GRILL HOUSE & COFFEE SHOP — Component Architecture
+ * Visual Language & Motion System (Dark, Warm, Tactile, Restaurant-Quality)
+ *
+ * 1. Category Navigation Index
+ * 2. Main Menu: CHOP CHOP Food-Card System
+ * 3. Product View: Bottom Sheet & Responsive Modal
+ * 4. Pizza Size & Grill Modifier Options
+ * 5. Quantity Stepper & Add to Order CTA
+ * 6. Sticky Floating Order Pill
+ * 7. Restaurant Order Sheet (Cart Drawer)
+ * 8. Order Confirmation Step (Ready to Send?)
+ * 9. Order Sent Celebratory Success View
+ * 10. Launch Experience & Toast Micro-Interactions
+ */
+
+/* ==========================================================================
+   1. Category Navigation Tabs (Refined Restaurant Menu Index)
+   ========================================================================== */
+
+/* Travelling Active Indicator for Category Navigation */
+.category-nav-indicator {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  height: 36px;
+  background-color: rgba(226, 163, 54, 0.16);
+  border: 1px solid var(--chopchop-amber);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 12px rgba(226, 163, 54, 0.25), inset 0 0 0 1px rgba(226, 163, 54, 0.35);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 1;
+  transition: transform var(--motion-medium) var(--ease-spring-out), 
+              width var(--motion-medium) var(--ease-spring-out),
+              opacity var(--motion-fast) var(--ease-in-out);
+  will-change: transform, width, opacity;
+}
+
+.category-tab {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 16px;
+  background-color: var(--chopchop-charcoal-900);
+  color: var(--chopchop-chalk-muted);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--motion-medium) var(--ease-spring-out), 
+              color var(--motion-medium) var(--ease-spring-out), 
+              border-color var(--motion-medium) var(--ease-spring-out),
+              box-shadow var(--motion-medium) var(--ease-spring-out),
+              transform var(--motion-fast) var(--ease-in-out);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+
+.category-tab:hover {
+  background-color: var(--chopchop-charcoal-800);
+  color: var(--chopchop-chalk-white);
+  border-color: var(--chopchop-charcoal-600);
+}
+
+.category-tab:active {
+  transform: scale(0.96);
+}
+
+.category-tab.active {
+  background-color: rgba(226, 163, 54, 0.16);
+  color: var(--chopchop-chalk-white);
+  border-color: var(--chopchop-amber);
+  font-weight: var(--font-weight-extrabold);
+  box-shadow: 0 0 12px rgba(226, 163, 54, 0.2), inset 0 0 0 1px rgba(226, 163, 54, 0.35);
+}
+
+/* When indicator is dynamically active, let the indicator handle the background */
+.has-indicator .category-tab.active {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.has-indicator .category-tab {
+  background-color: transparent;
+  border-color: transparent;
+}
+.has-indicator .category-tab:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.category-tab:focus-visible {
+  outline: 2px solid var(--chopchop-amber);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   2. Main Menu: CHOP CHOP Food-Card System & Scroll Reveal Motion
+   Dark, tactile, warm, photographic restaurant cards.
+   Food is the hero.
+   ========================================================================== */
+
+/* Progressive Scroll Reveal Initial States (Only active when JS is ready) */
+.chopchop-motion-active .category-group-header {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--motion-medium) var(--ease-spring-out),
+              transform var(--motion-medium) var(--ease-spring-out);
+  will-change: opacity, transform;
+}
+
+.chopchop-motion-active .category-group-header.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chopchop-motion-active .menu-card.compact-card {
+  opacity: 0;
+  transform: translateY(20px) scale(0.985);
+  transition: opacity var(--motion-medium) var(--ease-spring-out),
+              transform var(--motion-medium) var(--ease-spring-out),
+              box-shadow var(--motion-fast) var(--ease-in-out),
+              border-color var(--motion-fast) var(--ease-in-out),
+              background-color var(--motion-fast) var(--ease-in-out);
+  will-change: opacity, transform;
+}
+
+.chopchop-motion-active .menu-card.compact-card.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.menu-card.compact-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  background-color: var(--chopchop-charcoal-900);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-lg);
+  padding: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 160ms ease-out, 
+              box-shadow var(--motion-fast) var(--ease-in-out), 
+              border-color var(--motion-fast) var(--ease-in-out),
+              background-color var(--motion-fast) var(--ease-in-out);
+  position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  min-height: 116px;
+  will-change: transform;
+}
+
+.menu-card.compact-card:hover {
+  transform: translate3d(var(--card-tilt-x, 0px), calc(var(--card-tilt-y, 0px) - 2px), 0);
+  background-color: var(--chopchop-charcoal-850);
+  border-color: rgba(226, 163, 54, 0.5);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Tactile Card Pressure Response */
+.menu-card.compact-card:active,
+.menu-card.compact-card.is-pressed {
+  transform: scale(0.982) !important;
+  background-color: var(--chopchop-charcoal-850);
+  border-color: rgba(226, 163, 54, 0.4);
+}
+
+.menu-card.compact-card:focus-visible {
+  outline: 2px solid var(--chopchop-amber);
+  outline-offset: 2px;
+}
+
+/* Food Photography Presentation Box with Spatial Depth */
+.card-thumb-box {
+  position: relative;
+  width: 104px;
+  min-width: 104px;
+  height: 104px;
+  margin: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--chopchop-black);
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+@media (min-width: 640px) {
+  .card-thumb-box {
+    width: 114px;
+    min-width: 114px;
+    height: 114px;
+  }
+}
+
+/* Subtle Scroll Parallax on Food Image */
+.card-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: translate3d(0, var(--img-parallax-y, 0px), 0) scale(1.06);
+  transition: transform 120ms ease-out;
+  display: block;
+  will-change: transform;
+}
+
+.menu-card.compact-card:hover .card-thumb-img {
+  transform: translate3d(0, var(--img-parallax-y, 0px), 0) scale(1.10);
+}
+
+/* Subtle Vignette on Image */
+.card-thumb-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(8, 9, 12, 0.4) 100%);
+  pointer-events: none;
+}
+
+/* Card Category Badge (Subtle Dark Floating Tag) */
+.card-category-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  font-size: 0.6rem;
+  font-weight: var(--font-weight-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba(8, 9, 12, 0.88);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: var(--chopchop-amber);
+  border: 1px solid rgba(226, 163, 54, 0.3);
+  padding: 1px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Product Details Column */
+.card-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2px 4px 2px 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.card-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-family: var(--font-family-sans);
+  font-size: 1.02rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--chopchop-chalk-white);
+  line-height: 1.25;
+  margin: 0;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Appetising Ingredients & Preparation */
+.card-short-desc {
+  font-size: 0.785rem;
+  font-weight: var(--font-weight-regular);
+  color: var(--chopchop-chalk-muted);
+  line-height: 1.42;
+  margin: 4px 0 8px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Footer Row: Tabular Price & Restaurant Tap Action */
+.card-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.card-price-tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.price-from-label {
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--chopchop-chalk-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.price-val {
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-amber);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Restaurant Action Button */
+.btn-card-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 10px;
+  background-color: var(--chopchop-charcoal-800);
+  color: var(--chopchop-chalk-white);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-sans);
+  font-size: 0.72rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.btn-action-text {
+  line-height: 1;
+}
+
+.btn-action-plus {
+  width: 12px;
+  height: 12px;
+  color: var(--chopchop-amber);
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+.menu-card.compact-card:hover .btn-card-action {
+  background-color: var(--chopchop-charcoal-700);
+  border-color: var(--chopchop-amber);
+}
+
+.menu-card.compact-card:hover .btn-action-plus {
+  transform: scale(1.18);
+}
+
+/* ==========================================================================
+   3. Product View: Premium Bottom Sheet & Centered Modal
+   Tactile restaurant drawer. Dark + warm.
+   ========================================================================== */
+
+.product-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(8, 9, 12, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--motion-medium) var(--ease-in-out), 
+              visibility var(--motion-medium) var(--ease-in-out);
+  will-change: opacity;
+}
+
+.product-modal-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Crisp Natural Reverse Exit */
+.product-modal-backdrop.is-closing {
+  opacity: 0;
+  transition: opacity 190ms var(--ease-exit), visibility 190ms var(--ease-exit);
+}
+
+.product-modal-card {
+  position: relative;
+  background-color: var(--chopchop-charcoal-900);
+  background-image: radial-gradient(ellipse at 50% 0%, #201711 0%, var(--chopchop-charcoal-900) 65%);
+  border: 1px solid var(--chopchop-metal-border);
+  width: 100%;
+  max-width: 500px;
+  max-height: 92vh;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  box-shadow: var(--shadow-drawer);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(100%);
+  opacity: 0.92;
+  transition: transform var(--motion-medium) var(--ease-spring-out),
+              opacity var(--motion-fast) var(--ease-in-out);
+  will-change: transform, opacity;
+}
+
+.product-modal-backdrop.open .product-modal-card {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.product-modal-backdrop.is-closing .product-modal-card {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 190ms var(--ease-exit), opacity 190ms var(--ease-exit);
+}
+
+@media (min-width: 640px) {
+  .product-modal-backdrop {
+    align-items: center;
+    padding: 24px;
+  }
+
+  .product-modal-card {
+    border-radius: var(--radius-lg);
+    max-height: 88vh;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 1px rgba(255, 255, 255, 0.1);
+    transform: translateY(24px) scale(0.96);
+  }
+
+  .product-modal-backdrop.open .product-modal-card {
+    transform: translateY(0) scale(1);
+  }
+
+  .product-modal-backdrop.is-closing .product-modal-card {
+    transform: translateY(16px) scale(0.96);
+  }
+}
+
+/* Mobile Bottom Sheet Handle */
+.sheet-handle-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0 6px;
+  cursor: grab;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 12;
+}
+
+@media (min-width: 640px) {
+  .sheet-handle-bar {
+    display: none;
+  }
+}
+
+.sheet-handle-pip {
+  width: 38px;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background-color: rgba(255, 255, 255, 0.25);
+  transition: background-color var(--transition-fast);
+}
+
+/* Circular Close Button */
+.modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 15;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(13, 15, 20, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--chopchop-chalk-white);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.modal-close-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.modal-close-btn:hover {
+  background-color: var(--chopchop-black);
+  border-color: var(--chopchop-amber);
+  color: var(--chopchop-amber);
+  transform: scale(1.08);
+}
+
+.modal-close-btn:active {
+  transform: scale(0.92);
+}
+
+/* Modal Media Header */
+.modal-media-wrap {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  background-color: var(--chopchop-black);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+@media (min-width: 480px) {
+  .modal-media-wrap {
+    height: 240px;
+  }
+}
+
+/* Photo Expansion Continuity Motion: Expands subtly on entrance */
+.modal-food-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transform: scale(1.08);
+  transition: transform 420ms var(--ease-spring-out);
+  will-change: transform;
+}
+
+.product-modal-backdrop.open .modal-food-photo {
+  transform: scale(1);
+}
+
+.modal-media-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg, 
+    rgba(8, 9, 12, 0.45) 0%, 
+    transparent 35%, 
+    var(--chopchop-charcoal-900) 100%
+  );
+  pointer-events: none;
+}
+
+/* Scrollable Modal Content with Progressive Entry */
+.modal-content-body {
+  padding: 16px 20px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 280ms var(--ease-spring-out) 70ms,
+              transform 280ms var(--ease-spring-out) 70ms;
+  will-change: opacity, transform;
+}
+
+.product-modal-backdrop.open .modal-content-body {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.modal-header-meta {
+  margin-bottom: 6px;
+}
+
+.modal-category-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.6875rem;
+  font-weight: var(--font-weight-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--chopchop-amber);
+  background-color: rgba(226, 163, 54, 0.12);
+  border: 1px solid rgba(226, 163, 54, 0.35);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.modal-product-title {
+  font-family: var(--font-family-sans);
+  font-size: 1.35rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-chalk-white);
+  letter-spacing: -0.025em;
+  line-height: 1.22;
+  margin: 0 0 8px 0;
+}
+
+.modal-product-desc {
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-regular);
+  line-height: 1.55;
+  color: var(--chopchop-chalk-muted);
+  margin: 0 0 20px 0;
+}
+
+/* ==========================================================================
+   4. Pizza Sizes & Modifier Options (Tactile Dark Metal Controls)
+   ========================================================================== */
+
+.modal-sizes-section {
+  margin-bottom: 20px;
+}
+
+.modal-section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.modal-section-title {
+  font-size: 0.785rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-chalk-cream);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.modal-section-hint {
+  font-size: 0.6875rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--chopchop-chalk-dim);
+  background-color: var(--chopchop-charcoal-800);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.modal-sizes-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Size Option Card */
+.modal-size-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 14px;
+  background-color: var(--chopchop-charcoal-850);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.modal-size-option:hover {
+  border-color: var(--chopchop-charcoal-600);
+  background-color: var(--chopchop-charcoal-800);
+}
+
+.modal-size-option.active {
+  border-color: var(--chopchop-amber);
+  background-color: rgba(226, 163, 54, 0.12);
+  box-shadow: 0 0 10px rgba(226, 163, 54, 0.15);
+}
+
+.size-option-radio-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--chopchop-charcoal-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.radio-inner-pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background-color var(--transition-fast);
+}
+
+.modal-size-option.active .size-option-radio-dot {
+  border-color: var(--chopchop-amber);
+  background-color: transparent;
+}
+
+.modal-size-option.active .radio-inner-pip {
+  background-color: var(--chopchop-amber);
+}
+
+.size-option-text-col {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.size-option-name {
+  font-family: var(--font-family-sans);
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-chalk-white);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.size-option-subtitle {
+  font-size: 0.725rem;
+  color: var(--chopchop-chalk-muted);
+  margin-top: 1px;
+}
+
+.size-option-price-col {
+  margin-left: 12px;
+}
+
+.size-option-price {
+  font-family: var(--font-family-sans);
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-amber);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Single Portion Price Display */
+.modal-portion-section {
+  margin-bottom: 20px;
+}
+
+.portion-price-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background-color: var(--chopchop-charcoal-850);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-md);
+}
+
+.portion-label {
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--chopchop-chalk-muted);
+}
+
+.portion-value {
+  font-size: 1.15rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-amber);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Modifiers Container */
+.modal-modifiers-container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.modal-modifier-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-modifier-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.modal-modifier-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  background-color: var(--chopchop-charcoal-850);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-sans);
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--chopchop-chalk-cream);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.modal-modifier-btn:hover {
+  border-color: var(--chopchop-charcoal-600);
+  background-color: var(--chopchop-charcoal-800);
+}
+
+.modal-modifier-btn.active {
+  border-color: var(--chopchop-amber);
+  background-color: rgba(226, 163, 54, 0.14);
+  color: var(--chopchop-chalk-white);
+  font-weight: var(--font-weight-bold);
+  box-shadow: 0 0 8px rgba(226, 163, 54, 0.16);
+}
+
+.modifier-pip {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--chopchop-charcoal-600);
+  display: inline-block;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.modal-modifier-btn.active .modifier-pip {
+  border-color: var(--chopchop-amber);
+  background-color: var(--chopchop-amber);
+  box-shadow: inset 0 0 0 2px var(--chopchop-charcoal-900);
+}
+
+.modifier-btn-label {
+  line-height: 1.25;
+}
+
+/* Modifiers Summary in Cart */
+.cart-item-modifiers-summary {
+  font-size: 0.72rem;
+  color: var(--chopchop-chalk-muted);
+  line-height: 1.35;
+  margin-top: 3px;
+  margin-bottom: 2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   5. Quantity Stepper & Add to Order CTA
+   ========================================================================== */
+
+.modal-quantity-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background-color: var(--chopchop-charcoal-850);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+}
+
+.quantity-label-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.quantity-title {
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--chopchop-chalk-white);
+}
+
+.quantity-subtext {
+  font-size: 0.7rem;
+  color: var(--chopchop-chalk-muted);
+}
+
+.quantity-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-qty-step {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--chopchop-charcoal-700);
+  border: 1px solid var(--chopchop-metal-border);
+  color: var(--chopchop-chalk-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-qty-step svg {
+  width: 14px;
+  height: 14px;
+}
+
+.btn-qty-step:hover:not(.disabled) {
+  background-color: var(--chopchop-charcoal-600);
+  border-color: var(--chopchop-amber);
+  color: var(--chopchop-amber);
+}
+
+.btn-qty-step:active:not(.disabled) {
+  transform: scale(0.94);
+}
+
+.btn-qty-step.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.qty-count-display {
+  font-family: var(--font-family-sans);
+  font-size: 1.05rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-chalk-white);
+  min-width: 24px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Modal Sticky Action Footer */
+.modal-action-footer {
+  padding: 14px 20px 18px;
+  background-color: var(--chopchop-charcoal-950);
+  border-top: 1px solid var(--chopchop-metal-border);
+  flex-shrink: 0;
+}
+
+.btn-add-to-order {
+  width: 100%;
+  height: 50px;
+  border-radius: var(--radius-md);
+  background-color: var(--chopchop-amber);
+  color: var(--chopchop-black);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-family-sans);
+  font-size: 0.95rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), 
+              transform var(--transition-fast), 
+              box-shadow var(--transition-fast);
+  box-shadow: 0 4px 16px rgba(226, 163, 54, 0.3);
+}
+
+.btn-add-label {
+  text-transform: uppercase;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+}
+
+.btn-add-divider {
+  color: rgba(10, 12, 16, 0.4);
+}
+
+.btn-add-total {
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.btn-add-to-order:hover {
+  background-color: var(--chopchop-amber-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(226, 163, 54, 0.4);
+}
+
+.btn-add-to-order:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.btn-add-to-order.btn-added-success {
+  background-color: #10B981 !important;
+  color: #FFFFFF !important;
+}
+
+.btn-add-to-order.btn-added-success .btn-add-divider,
+.btn-add-to-order.btn-added-success .btn-add-total {
+  display: none;
+}
+
+/* ==========================================================================
+   6. Sticky Floating Order Pill
+   "ORDER · 2 ITEMS · $38"
+   ========================================================================== */
+
+.sticky-cart-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+  transition: transform var(--transition-normal), opacity 200ms ease;
+  opacity: 0;
+  transform: translateY(18px) scale(0.95);
+}
+
+.sticky-cart-container.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.sticky-cart-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--chopchop-charcoal-900);
+  color: var(--chopchop-chalk-white);
+  border: 1.5px solid var(--chopchop-amber);
+  padding: 10px 18px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 16px rgba(226, 163, 54, 0.2);
+  font-family: var(--font-family-sans);
+  font-size: 0.86rem;
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: transform var(--transition-fast), 
+              background-color var(--transition-fast), 
+              box-shadow var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.sticky-cart-btn:hover {
+  background-color: var(--chopchop-charcoal-800);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.7), 0 0 22px rgba(226, 163, 54, 0.35);
+}
+
+.sticky-cart-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.sticky-cart-btn:focus-visible {
+  outline: 2px solid var(--chopchop-amber);
+  outline-offset: 2px;
+}
+
+.sticky-cart-icon {
+  font-size: 1rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+.sticky-cart-title {
+  color: var(--chopchop-chalk-white);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+}
+
+.sticky-cart-bullet {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.85rem;
+}
+
+.sticky-cart-count {
+  color: var(--chopchop-chalk-cream);
+  font-weight: var(--font-weight-semibold);
+}
+
+.sticky-cart-total {
+  color: var(--chopchop-amber);
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 600px) {
+  .sticky-cart-container {
+    bottom: 16px;
+    right: 16px;
+  }
+  .sticky-cart-btn {
+    padding: 9px 15px;
+    font-size: 0.82rem;
+  }
+}
+
+/* ==========================================================================
+   7. Restaurant Order Sheet (Cart Drawer)
+   Dark header, warm accent, clear food items, quantity controls, subtotal.
+   ========================================================================== */
+
+.cart-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(8, 9, 12, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--motion-medium) var(--ease-in-out), 
+              visibility var(--motion-medium) var(--ease-in-out);
+  padding: 0;
+  will-change: opacity;
+}
+
+.cart-modal-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Crisp Reverse Exit for Cart Drawer */
+.cart-modal-backdrop.is-closing {
+  opacity: 0;
+  transition: opacity 190ms var(--ease-exit), visibility 190ms var(--ease-exit);
+}
+
+@media (min-width: 640px) {
+  .cart-modal-backdrop {
+    align-items: center;
+    padding: 24px;
+  }
+}
+
+.cart-drawer-card {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  background-color: var(--chopchop-charcoal-900);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  box-shadow: var(--shadow-drawer);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(100%);
+  opacity: 0.94;
+  transition: transform var(--motion-medium) var(--ease-spring-out),
+              opacity var(--motion-fast) var(--ease-in-out);
+  will-change: transform, opacity;
+}
+
+@media (min-width: 640px) {
+  .cart-drawer-card {
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 1px rgba(255, 255, 255, 0.1);
+    transform: translateY(24px) scale(0.96);
+    max-height: 86vh;
+  }
+}
+
+.cart-modal-backdrop.open .cart-drawer-card {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.cart-modal-backdrop.is-closing .cart-drawer-card {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 190ms var(--ease-exit), opacity 190ms var(--ease-exit);
+}
+
+@media (min-width: 640px) {
+  .cart-modal-backdrop.is-closing .cart-drawer-card {
+    transform: translateY(16px) scale(0.96);
+  }
+}
+
+/* Cart Header */
+.cart-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background-color: var(--chopchop-charcoal-950);
+  border-bottom: 1px solid var(--chopchop-metal-border);
+  flex-shrink: 0;
+}
+
+.cart-header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart-header-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.cart-header-headings {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.cart-drawer-title {
+  font-size: 1.05rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-chalk-white);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.cart-drawer-count-badge {
+  font-size: 0.72rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--chopchop-amber);
+  background: rgba(226, 163, 54, 0.14);
+  padding: 1px 7px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(226, 163, 54, 0.35);
+}
+
+.cart-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: var(--chopchop-charcoal-800);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: 50%;
+  color: var(--chopchop-chalk-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cart-close-btn:hover {
+  background-color: var(--chopchop-charcoal-700);
+  color: var(--chopchop-chalk-white);
+  border-color: var(--chopchop-amber);
+}
+
+.cart-close-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ==========================================================================
+   Fulfillment Mode Bar in Cart Drawer (Pickup • Dine-In)
+   ========================================================================== */
+.cart-mode-bar {
+  padding: 10px 18px;
+  background-color: var(--chopchop-charcoal-950);
+  border-bottom: 1px solid var(--chopchop-metal-border);
+  flex-shrink: 0;
+}
+
+.cart-mode-segmented {
+  display: flex;
+  background-color: var(--chopchop-charcoal-900);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 4px;
+}
+
+.cart-mode-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: calc(var(--radius-sm) - 2px);
+  background: transparent;
+  border: none;
+  color: var(--chopchop-chalk-dim);
+  font-family: var(--font-family-sans);
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cart-mode-btn .cart-mode-pip {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 1px solid var(--chopchop-chalk-dim);
+  transition: all var(--transition-fast);
+}
+
+.cart-mode-btn:hover {
+  color: var(--chopchop-chalk-white);
+}
+
+.cart-mode-btn.active {
+  background-color: var(--chopchop-charcoal-800);
+  color: var(--chopchop-chalk-white);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.cart-mode-btn.active .cart-mode-pip {
+  background-color: var(--chopchop-amber);
+  border-color: var(--chopchop-amber);
+  box-shadow: 0 0 6px rgba(226, 163, 54, 0.6);
+}
+
+/* ==========================================================================
+   CHOP CHOP Dine-In Table Number Experience (Phase 5)
+   Physical Restaurant Brass Tabletop Marker
+   ========================================================================== */
+.checkout-table-section {
+  padding: 16px 18px 14px;
+  background: linear-gradient(180deg, rgba(226, 163, 54, 0.04) 0%, rgba(13, 15, 20, 0) 100%),
+              var(--chopchop-charcoal-950);
+  border-bottom: 1px solid var(--chopchop-metal-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: tableSectionSlideDown 260ms var(--ease-spring-out) both;
+  flex-shrink: 0;
+}
+
+@keyframes tableSectionSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.table-section-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.table-eyebrow-tag {
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.12em;
+  color: var(--chopchop-amber);
+  text-transform: uppercase;
+}
+
+.table-eyebrow-sep {
+  color: rgba(226, 163, 54, 0.4);
+  font-size: 0.75rem;
+}
+
+.table-eyebrow-title {
+  font-size: 0.82rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.06em;
+  color: var(--chopchop-chalk-white);
+  text-transform: uppercase;
+}
+
+/* The Architectural Physical Table Marker Card */
+.table-marker-card {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  background: radial-gradient(ellipse at 50% 15%, #1B212D 0%, #0D1016 100%);
+  border: 1.5px solid rgba(226, 163, 54, 0.35);
+  border-radius: var(--radius-md);
+  padding: 16px 20px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 
+              0 8px 24px rgba(0, 0, 0, 0.55),
+              0 0 16px rgba(226, 163, 54, 0.08);
+  cursor: pointer;
+  transition: transform var(--transition-fast),
+              border-color var(--transition-fast),
+              box-shadow var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.table-marker-card:hover {
+  border-color: rgba(226, 163, 54, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 
+              0 10px 28px rgba(0, 0, 0, 0.65),
+              0 0 22px rgba(226, 163, 54, 0.15);
+}
+
+.table-marker-card:focus-within,
+.table-marker-card.is-focused {
+  border-color: var(--chopchop-amber);
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 
+              0 0 0 2px rgba(226, 163, 54, 0.25),
+              0 12px 34px rgba(0, 0, 0, 0.7),
+              0 0 30px rgba(226, 163, 54, 0.28);
+}
+
+/* Corner Screws / Brass Rivets */
+.marker-rivet {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #F0B247, #7D5210);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+.marker-rivet-tl { top: 7px; left: 7px; }
+.marker-rivet-tr { top: 7px; right: 7px; }
+.marker-rivet-bl { bottom: 7px; left: 7px; }
+.marker-rivet-br { bottom: 7px; right: 7px; }
+
+/* Table Marker Header */
+.marker-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-bottom: 2px;
+}
+
+.marker-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--chopchop-amber);
+}
+
+.marker-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.marker-label {
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.2em;
+  color: var(--chopchop-chalk-muted);
+  text-transform: uppercase;
+}
+
+/* The Huge Interactive Number Input */
+.marker-input-wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px 0 6px;
+  position: relative;
+}
+
+.table-number-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-family-display, var(--font-family-sans));
+  font-size: clamp(3rem, 12vw, 4.2rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-align: center;
+  line-height: 1.1;
+  color: var(--chopchop-amber);
+  caret-color: var(--chopchop-amber);
+  font-variant-numeric: tabular-nums;
+  padding: 0;
+  margin: 0;
+  -moz-appearance: textfield;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.table-number-input::-webkit-outer-spin-button,
+.table-number-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.table-number-input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+  font-weight: 400;
+}
+
+/* Number Entry Settle Animation */
+.table-number-input.number-settle {
+  animation: tableNumberSettle 220ms var(--ease-spring-out) both;
+}
+
+@keyframes tableNumberSettle {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.75;
+  }
+  60% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Error Shake Animation */
+.table-marker-card.has-error {
+  border-color: #EF4444 !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3), 0 8px 24px rgba(239, 68, 68, 0.2) !important;
+  animation: tableMarkerShake 400ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes tableMarkerShake {
+  0%, 100% { transform: translateX(0); }
+  15%, 45%, 75% { transform: translateX(-6px); }
+  30%, 60%, 90% { transform: translateX(6px); }
+}
+
+/* Marker Base Seal */
+.marker-base-seal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.seal-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(226, 163, 54, 0.3), transparent);
+}
+
+.seal-text {
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.14em;
+  color: rgba(226, 163, 54, 0.75);
+  text-transform: uppercase;
+}
+
+/* Supporting Hint & Error Messages */
+.table-number-hint {
+  font-size: 0.78rem;
+  color: var(--chopchop-chalk-muted);
+  margin: 10px 0 0;
+  text-align: center;
+  font-weight: var(--font-weight-medium);
+  transition: color var(--transition-fast);
+}
+
+.table-number-hint.has-value {
+  color: var(--chopchop-chalk-white);
+}
+
+.table-error-alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 6px 12px;
+  background-color: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: var(--radius-sm);
+  color: #FCA5A5;
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-semibold);
+  animation: viewSlideUp 200ms ease both;
+}
+
+.table-error-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* Fulfillment Strip in Cart Review Footer */
+.cart-fulfillment-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background-color: var(--chopchop-charcoal-900);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 10px;
+}
+
+.fulfillment-badge-label {
+  font-size: 0.68rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.08em;
+  color: var(--chopchop-chalk-dim);
+  text-transform: uppercase;
+}
+
+.fulfillment-badge-val {
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.05em;
+  color: var(--chopchop-amber);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Scroll Area for Items */
+.cart-items-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px;
+  -webkit-overflow-scrolling: touch;
+  background-color: var(--chopchop-charcoal-950);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Individual Cart Item Card with Staggered Sequence */
+.cart-item-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--chopchop-charcoal-900);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform var(--motion-fast) var(--ease-in-out),
+              background-color var(--motion-fast) var(--ease-in-out);
+}
+
+.cart-modal-backdrop.open .cart-item-row {
+  animation: cartItemFadeIn var(--motion-medium) var(--ease-spring-out) both;
+}
+
+.cart-modal-backdrop.open .cart-item-row:nth-child(1) { animation-delay: 20ms; }
+.cart-modal-backdrop.open .cart-item-row:nth-child(2) { animation-delay: 50ms; }
+.cart-modal-backdrop.open .cart-item-row:nth-child(3) { animation-delay: 80ms; }
+.cart-modal-backdrop.open .cart-item-row:nth-child(4) { animation-delay: 110ms; }
+.cart-modal-backdrop.open .cart-item-row:nth-child(n+5) { animation-delay: 140ms; }
+
+@keyframes cartItemFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cart-item-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background-color: var(--chopchop-black);
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cart-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cart-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.cart-item-name {
+  font-size: 0.92rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--chopchop-chalk-white);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.015em;
+}
+
+.cart-item-size-pill {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-amber);
+  background-color: rgba(226, 163, 54, 0.12);
+  border: 1px solid rgba(226, 163, 54, 0.3);
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.cart-item-unit-price {
+  font-size: 0.76rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--chopchop-chalk-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Stepper & Controls */
+.cart-item-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.cart-item-subtotal {
+  font-size: 0.96rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-amber);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.cart-stepper-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cart-stepper {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--chopchop-charcoal-800);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+}
+
+.btn-cart-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: transparent;
+  border: none;
+  color: var(--chopchop-chalk-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-cart-step:hover {
+  background-color: var(--chopchop-charcoal-700);
+  color: var(--chopchop-chalk-white);
+}
+
+.btn-cart-step svg {
+  width: 12px;
+  height: 12px;
+}
+
+.cart-step-val {
+  min-width: 22px;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--chopchop-chalk-white);
+  font-variant-numeric: tabular-nums;
+}
+
+.btn-cart-remove {
+  background: transparent;
+  border: none;
+  color: var(--chopchop-chalk-dim);
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+  margin-left: 2px;
+}
+
+.btn-cart-remove:hover {
+  color: #EF4444;
+  background-color: rgba(239, 68, 68, 0.15);
+}
+
+.btn-cart-remove svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Cart Footer */
+.cart-drawer-footer {
+  padding: 14px 18px 18px;
+  background-color: var(--chopchop-charcoal-950);
+  border-top: 1px solid var(--chopchop-metal-border);
+  flex-shrink: 0;
+}
+
+.cart-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--chopchop-metal-border);
+}
+
+.cart-total-label-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-total-main-label {
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-chalk-cream);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cart-total-tax-note {
+  font-size: 0.68rem;
+  color: var(--chopchop-chalk-dim);
+  font-weight: var(--font-weight-medium);
+}
+
+.cart-total-amount {
+  font-size: 1.45rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-amber);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.cart-actions-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Primary Restaurant Action: SEND ORDER • $TOTAL */
+.btn-cart-send-order {
+  width: 100%;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background-color: var(--chopchop-amber);
+  color: var(--chopchop-black);
+  border: none;
+  font-family: var(--font-family-sans);
+  font-size: 0.92rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 16px rgba(226, 163, 54, 0.3);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-cart-send-order:hover {
+  background-color: var(--chopchop-amber-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(226, 163, 54, 0.45);
+}
+
+.btn-cart-send-order:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.btn-send-label {
+  color: var(--chopchop-black);
+}
+
+.btn-send-dot {
+  color: rgba(10, 12, 16, 0.4);
+}
+
+.btn-send-price {
+  color: var(--chopchop-black);
+  font-weight: var(--font-weight-extrabold);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Secondary Action: CONTINUE BROWSING */
+.btn-cart-continue {
+  width: 100%;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--chopchop-chalk-muted);
+  border: 1px solid var(--chopchop-metal-border);
+  font-family: var(--font-family-sans);
+  font-size: 0.82rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-cart-continue:hover {
+  background-color: var(--chopchop-charcoal-800);
+  color: var(--chopchop-chalk-white);
+  border-color: var(--chopchop-charcoal-600);
+}
+
+.btn-cart-continue:active {
+  transform: scale(0.99);
+}
+
+/* ==========================================================================
+   8. Order Confirmation Step (Ready to Send?)
+   ========================================================================== */
+
+@keyframes viewSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes viewSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cart-confirm-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 20px 28px;
+  background-color: var(--chopchop-charcoal-950);
+  text-align: center;
+  animation: viewSlideIn var(--motion-medium) var(--ease-spring-out) both;
+}
+
+.cart-confirm-content {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.confirm-badge {
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--chopchop-amber);
+  background-color: rgba(226, 163, 54, 0.12);
+  border: 1px solid rgba(226, 163, 54, 0.35);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  margin-bottom: 12px;
+}
+
+.confirm-heading {
+  font-size: 1.4rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-chalk-white);
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+}
+
+.confirm-subtext {
+  font-size: 0.88rem;
+  color: var(--chopchop-chalk-muted);
+  margin: 0 0 20px;
+  line-height: 1.4;
+}
+
+.confirm-summary-box {
+  width: 100%;
+  background-color: var(--chopchop-charcoal-900);
+  border: 1px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.confirm-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.confirm-summary-row:not(:last-child) {
+  border-bottom: 1px dashed var(--chopchop-metal-border);
+}
+
+.confirm-summary-label {
+  font-size: 0.82rem;
+  color: var(--chopchop-chalk-muted);
+  font-weight: var(--font-weight-medium);
+}
+
+.confirm-summary-val {
+  font-size: 0.92rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--chopchop-chalk-white);
+}
+
+.confirm-table-badge {
+  color: var(--chopchop-amber);
+  background: rgba(226, 163, 54, 0.14);
+  border: 1px solid rgba(226, 163, 54, 0.4);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.confirm-total-highlight {
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-amber);
+  font-variant-numeric: tabular-nums;
+}
+
+.confirm-error-alert {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: var(--radius-sm);
+  color: #FCA5A5;
+  font-size: 0.82rem;
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.confirm-actions-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.btn-confirm-send {
+  width: 100%;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background-color: var(--chopchop-amber);
+  color: var(--chopchop-black);
+  border: none;
+  font-family: var(--font-family-sans);
+  font-size: 0.92rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 16px rgba(226, 163, 54, 0.3);
+}
+
+.btn-confirm-send:hover {
+  background-color: var(--chopchop-amber-hover);
+  transform: translateY(-1px);
+}
+
+.btn-confirm-send:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.btn-confirm-send.loading {
+  opacity: 0.75;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.btn-confirm-back {
+  width: 100%;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--chopchop-chalk-muted);
+  border: 1px solid var(--chopchop-metal-border);
+  font-family: var(--font-family-sans);
+  font-size: 0.82rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-confirm-back:hover {
+  background-color: var(--chopchop-charcoal-800);
+  color: var(--chopchop-chalk-white);
+}
+
+/* ==========================================================================
+   9. Order Sent Celebratory Success View
+   Warm, celebratory restaurant confirmation without flashy clutter.
+   ========================================================================== */
+
+.cart-success-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 36px 24px;
+  background-color: var(--chopchop-charcoal-950);
+  text-align: center;
+  animation: viewSlideIn var(--motion-medium) var(--ease-spring-out) both;
+}
+
+.cart-success-content {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Restrained Success State Sequence */
+@keyframes successIconPop {
+  0% { transform: scale(0.72); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.success-icon-badge {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: rgba(226, 163, 54, 0.12);
+  border: 2px solid var(--chopchop-amber);
+  color: var(--chopchop-amber);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  box-shadow: 0 0 20px rgba(226, 163, 54, 0.25);
+  animation: successIconPop var(--motion-medium) var(--ease-spring-out) both;
+}
+
+.success-checkmark {
+  font-size: 1.8rem;
+  font-weight: var(--font-weight-extrabold);
+  line-height: 1;
+}
+
+.success-title {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-chalk-white);
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+  animation: viewSlideUp var(--motion-medium) var(--ease-spring-out) 60ms both;
+}
+
+/* Dynamic Fulfillment Card on Success */
+.success-fulfillment-card {
+  width: 100%;
+  background: radial-gradient(ellipse at 50% 20%, #1A202C 0%, #10131A 100%);
+  border: 1.5px solid rgba(226, 163, 54, 0.35);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  animation: viewSlideUp var(--motion-medium) var(--ease-spring-out) 100ms both;
+}
+
+.success-fulfillment-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.success-badge-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.success-badge-text {
+  font-size: 1.35rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-amber);
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+}
+
+.success-fulfillment-msg {
+  font-size: 0.88rem;
+  color: var(--chopchop-chalk-cream);
+  margin: 0;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  text-align: center;
+}
+
+.success-lead-text {
+  font-size: 0.94rem;
+  color: var(--chopchop-chalk-muted);
+  margin: 0 0 22px;
+  line-height: 1.45;
+  animation: viewSlideUp var(--motion-medium) var(--ease-spring-out) 100ms both;
+}
+
+.success-order-number-card {
+  width: 100%;
+  background-color: var(--chopchop-charcoal-900);
+  border: 1.5px solid var(--chopchop-metal-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  animation: viewSlideUp var(--motion-medium) var(--ease-spring-out) 140ms both;
+}
+
+.order-number-label {
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.12em;
+  color: var(--chopchop-chalk-dim);
+  text-transform: uppercase;
+}
+
+.order-number-value {
+  font-size: 2rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-amber);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.success-status-note {
+  font-size: 0.86rem;
+  color: var(--chopchop-chalk-muted);
+  margin: 0 0 26px;
+  line-height: 1.45;
+  animation: viewSlideUp var(--motion-medium) var(--ease-spring-out) 180ms both;
+}
+
+.btn-success-back {
+  width: 100%;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background-color: var(--chopchop-amber);
+  color: var(--chopchop-black);
+  border: none;
+  font-family: var(--font-family-sans);
+  font-size: 0.88rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 16px rgba(226, 163, 54, 0.3);
+  animation: viewSlideUp var(--motion-medium) var(--ease-spring-out) 220ms both;
+}
+
+.btn-success-back:hover {
+  background-color: var(--chopchop-amber-hover);
+  transform: translateY(-1px);
+}
+
+.btn-success-back:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+/* Micro-Interaction Animation Tokens */
+@keyframes cartCountPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.18); color: var(--chopchop-amber); }
+  100% { transform: scale(1); }
+}
+
+.cart-count-pop {
+  animation: cartCountPop var(--motion-medium) var(--ease-spring-out);
+}
+
+@keyframes qtyNumberPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.22); color: var(--chopchop-amber); }
+  100% { transform: scale(1); }
+}
+
+.qty-pop {
+  animation: qtyNumberPop 200ms var(--ease-spring-out);
+}
+
+@keyframes cartPillPulse {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-3px) scale(1.04); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.cart-pill-pulse {
+  animation: cartPillPulse var(--motion-medium) var(--ease-spring-out);
+}
+
+/* ==========================================================================
+   10. Feedback Toast, Clear Cart & Empty States
+   ========================================================================== */
+
+.foodies-toast,
+.chopchop-toast {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%) translateY(40px);
+  z-index: 1200;
+  background-color: var(--chopchop-charcoal-900);
+  color: var(--chopchop-chalk-white);
+  border: 1px solid rgba(226, 163, 54, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 16px rgba(226, 163, 54, 0.2);
+  padding: 10px 18px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 260ms var(--ease-spring-out), opacity 260ms ease;
+}
+
+.foodies-toast.show,
+.chopchop-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #10B981;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.toast-indicator svg {
+  width: 13px;
+  height: 13px;
+}
+
+.toast-message {
+  line-height: 1;
+}
+
+/* Clear Cart Action Button */
+.cart-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-clear-cart {
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #FCA5A5;
+  font-size: 0.72rem;
+  font-weight: var(--font-weight-bold);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-clear-cart:hover {
+  background: #EF4444;
+  color: #FFFFFF;
+  border-color: #EF4444;
+}
+
+/* Empty State in Drawer */
+.cart-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 20px;
+  margin: auto 0;
+}
+
+.empty-cart-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(226, 163, 54, 0.12);
+  border: 1.5px solid rgba(226, 163, 54, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.empty-cart-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--chopchop-amber);
+}
+
+.empty-cart-title {
+  font-family: var(--font-family-sans);
+  font-size: 1.15rem;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--chopchop-chalk-white);
+  margin: 0 0 8px 0;
+  letter-spacing: -0.02em;
+}
+
+.empty-cart-lead {
+  font-size: 0.85rem;
+  color: var(--chopchop-chalk-muted);
+  max-width: 280px;
+  line-height: 1.45;
+  margin: 0 0 20px 0;
+}
+
+.btn-empty-cart-browse {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 22px;
+  background-color: var(--chopchop-amber);
+  color: var(--chopchop-black);
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-sans);
+  font-size: 0.84rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(226, 163, 54, 0.3);
+  transition: all var(--transition-fast);
+}
+
+.btn-empty-cart-browse:hover {
+  background-color: var(--chopchop-amber-hover);
+  transform: translateY(-1px);
+}
+
+/* Fallback vector graphics */
+.card-thumb-fallback,
+.cart-thumb-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--chopchop-charcoal-900);
+}
+
+.card-thumb-fallback svg,
+.cart-thumb-fallback svg {
+  width: 100%;
+  height: 100%;
+  max-width: 80%;
+  max-height: 80%;
+}
+
+/* Body Scroll Lock */
+.modal-scroll-lock {
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   11. Launch Screen Experience
+   ========================================================================== */
+
+body.launch-active {
+  overflow: hidden !important;
+  touch-action: none;
+}
+
+.foodies-launch-screen,
+.chopchop-launch-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #08090C;
+  background-image: 
+    radial-gradient(circle at 50% 35%, rgba(226, 163, 54, 0.12) 0%, transparent 60%),
+    radial-gradient(circle at 50% 90%, rgba(184, 58, 13, 0.08) 0%, transparent 70%);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 550ms var(--ease-smooth),
+              transform 550ms var(--ease-smooth),
+              visibility 550ms ease;
+  will-change: opacity, transform;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.foodies-launch-screen.launch-dismissed,
+.chopchop-launch-screen.launch-dismissed {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.025);
+  pointer-events: none;
+}
+
+.launch-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 24px;
+  max-width: 360px;
+  width: 100%;
+}
+
+.launch-brand-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: launchBrandEntrance 700ms var(--ease-spring-out) forwards;
+}
+
+@keyframes launchBrandEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.launch-brand-mark {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #1C2230 0%, #0A0C10 100%);
+  border: 1.5px solid rgba(226, 163, 54, 0.45);
+  color: var(--chopchop-amber);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  box-shadow: 
+    0 12px 30px rgba(0, 0, 0, 0.7),
+    0 0 24px rgba(226, 163, 54, 0.25);
+}
+
+.launch-brand-mark svg {
+  width: 38px;
+  height: 38px;
+  animation: launchFlameGlow 2200ms ease-in-out infinite alternate;
+}
+
+@keyframes launchFlameGlow {
+  0% {
+    color: var(--chopchop-amber);
+    transform: scale(0.98);
+    filter: drop-shadow(0 0 3px rgba(226, 163, 54, 0.4));
+  }
+  100% {
+    color: #F5B041;
+    transform: scale(1.03);
+    filter: drop-shadow(0 0 10px rgba(226, 163, 54, 0.8)) drop-shadow(0 0 16px rgba(184, 58, 13, 0.4));
+  }
+}
+
+.launch-glow-radial {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(226, 163, 54, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.launch-brand-title {
+  font-family: var(--font-family-sans);
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--chopchop-chalk-white);
+  margin: 0 0 8px;
+  line-height: 1;
+}
+
+.launch-brand-accent {
+  color: var(--chopchop-amber);
+}
+
+.launch-brand-rule {
+  width: 42px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--chopchop-flame), var(--chopchop-amber));
+  border-radius: 2px;
+  margin-bottom: 24px;
+}
+
+.launch-message-box {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 26px;
+}
+
+.launch-welcome-text {
+  font-family: var(--font-family-sans);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chopchop-chalk-cream);
+  margin: 0;
+  transition: opacity 220ms ease, transform 220ms ease, color 220ms ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.launch-welcome-text.text-transitioning {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.launch-welcome-text.text-secondary-state {
+  color: var(--chopchop-amber);
+  letter-spacing: 0.12em;
+  font-weight: 800;
+  animation: launchTextReveal 320ms var(--ease-spring-out) forwards;
+}
+
+@keyframes launchTextReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.launch-progress-track {
+  width: 140px;
+  height: 2.5px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.launch-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(90deg, transparent 0%, var(--chopchop-flame) 40%, var(--chopchop-amber) 100%);
+  border-radius: var(--radius-full);
+  transform: translateX(-100%);
+  animation: launchProgressFill 2000ms cubic-bezier(0.2, 0, 0.2, 1) forwards;
+}
+
+@keyframes launchProgressFill {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(-20%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+/* Tactile Touch Feedback */
+.btn-card-action:active {
+  transform: scale(0.94);
+}
+
+.qty-btn:active {
+  transform: scale(0.92);
+}
+
+.order-opt-btn:active {
+  transform: scale(0.96);
+}
+
+.btn-opt-pill:active {
+  transform: scale(0.96);
+}
+
+/* ==========================================================================
+   11. Cinematic Shared-Element Proxy & Traveling Spark Beam (Phase 4)
+   ========================================================================== */
+
+/* Shared-Element Photo Continuity Proxy */
+.shared-element-proxy {
+  position: fixed;
+  background-size: cover;
+  background-position: center;
+  z-index: var(--z-proxy);
+  pointer-events: none;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.75), 0 0 24px rgba(226, 163, 54, 0.3);
+  border: 1px solid rgba(226, 163, 54, 0.45);
+  will-change: top, left, width, height, border-radius, opacity;
+}
+
+/* Signature Traveling Amber Spark Beam */
+.add-to-cart-spark {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFFFFF 15%, var(--chopchop-amber) 65%, rgba(184, 58, 13, 0) 100%);
+  box-shadow: 0 0 16px 4px rgba(226, 163, 54, 0.8), 0 0 6px 1px #FFFFFF;
+  pointer-events: none;
+  z-index: var(--z-particles);
+  will-change: transform, opacity;
+}
+
+/* Option Price Change Subtle Pop */
+.price-pop-anim {
+  animation: priceDigitSlide 180ms var(--ease-spring-out);
+}
+
+@keyframes priceDigitSlide {
+  0% {
+    opacity: 0.3;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced Motion Respect (Mandatory) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .shared-element-proxy,
+  .add-to-cart-spark {
+    display: none !important;
+  }
+
+  .foodies-launch-screen,
+  .chopchop-launch-screen {
+    transition: opacity 200ms ease !important;
+  }
+
+  .foodies-launch-screen.launch-dismissed,
+  .chopchop-launch-screen.launch-dismissed {
+    transform: none !important;
+  }
+
+  .launch-brand-wrap,
+  .launch-brand-mark svg,
+  .launch-welcome-text,
+  .launch-progress-bar,
+  .category-nav-indicator,
+  .cart-count-pop,
+  .qty-pop,
+  .cart-pill-pulse,
+  .success-icon-badge {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .chopchop-motion-active .category-group-header,
+  .chopchop-motion-active .menu-card.compact-card,
+  .js-reveal-ready .category-group-header,
+  .js-reveal-ready .menu-card.compact-card,
+  .js-reveal-ready #app-footer .footer-brand-section,
+  .js-reveal-ready #app-footer .footer-meta-section,
+  .js-reveal-ready #app-footer .footer-copyright-section,
+  .js-reveal-ready #app-footer .footer-attribution-section,
+  .js-reveal-ready #app-footer .footer-divider {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .product-modal-card,
+  .cart-drawer-card,
+  .modal-food-photo,
+
+  .modal-content-body {
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,192 @@
+/**
+ * CHOP CHOP GRILL HOUSE & COFFEE SHOP — Editorial Typography System
+ * Confident, tactile, restaurant-quality typographic hierarchy.
+ *
+ * Scannable display typography for:
+ * - CHOP CHOP brand mark & headers
+ * - Dining chapter titles (MAINS & STEAKS, BURGERS, etc.)
+ * - Product titles (Aged Steaks, Kariba Bream, Brioche Burgers)
+ * - Numerical pricing (tabular figures in warm amber)
+ * - Readable descriptions & ingredients on dark charcoal canvas
+ */
+
+/* ==========================================================================
+   Display & Brand Wordmarks
+   ========================================================================== */
+
+.text-display,
+.chopchop-display {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.035em;
+  color: var(--chopchop-chalk-white);
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Editorial Headings
+   ========================================================================== */
+
+h1,
+.heading-1 {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.025em;
+  color: var(--chopchop-chalk-white);
+}
+
+h2,
+.heading-2 {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  letter-spacing: -0.02em;
+  color: var(--chopchop-chalk-white);
+}
+
+h3,
+.heading-3 {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  letter-spacing: -0.015em;
+  color: var(--chopchop-chalk-cream);
+}
+
+h4,
+.heading-4 {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+  letter-spacing: -0.01em;
+  color: var(--chopchop-chalk-white);
+}
+
+/* Dining Chapter Section Title */
+.category-chapter-title {
+  font-family: var(--font-family-sans);
+  font-size: 1.2rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--chopchop-chalk-white);
+  line-height: 1.15;
+}
+
+.category-chapter-subtitle {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  color: var(--chopchop-chalk-muted);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   Body & Descriptive Prose
+   ========================================================================== */
+
+.text-lead {
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-relaxed);
+  color: var(--chopchop-chalk-cream);
+}
+
+.text-body {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--chopchop-chalk-cream);
+}
+
+.text-small {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  color: var(--chopchop-chalk-muted);
+}
+
+.text-caption {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-normal);
+  color: var(--chopchop-chalk-dim);
+}
+
+/* ==========================================================================
+   Prices (Tabular Numerals for Rock-Solid Alignment)
+   ========================================================================== */
+
+.price-tabular,
+.price-figure,
+.price-val,
+.cart-item-subtotal,
+.portion-value,
+.cart-total-amount,
+.sticky-cart-total {
+  font-family: var(--font-family-sans);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: -0.02em;
+}
+
+/* Warm Amber Accent Color */
+.text-brand-amber,
+.text-gold {
+  color: var(--chopchop-amber);
+}
+
+.text-brand-flame {
+  color: var(--chopchop-flame);
+}
+
+.text-muted {
+  color: var(--chopchop-chalk-muted);
+}
+
+.text-dim {
+  color: var(--chopchop-chalk-dim);
+}
+
+.text-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+.text-semibold {
+  font-weight: var(--font-weight-semibold);
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* ==========================================================================
+   Responsive Scaling
+   ========================================================================== */
+
+@media (min-width: 640px) {
+  .category-chapter-title {
+    font-size: 1.35rem;
+    letter-spacing: 0.06em;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-display,
+  .chopchop-display {
+    font-size: 2.75rem;
+  }
+
+  h1,
+  .heading-1 {
+    font-size: var(--font-size-3xl);
+  }
+
+  h2,
+  .heading-2 {
+    font-size: var(--font-size-2xl);
+  }
+}

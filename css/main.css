@@ -1,0 +1,17 @@
+/**
+ * CHOP CHOP Digital Ordering System
+ * Fast-Food Digital Menu Master Stylesheet
+ * 
+ * Modular CSS structure:
+ * 1. variables.css  — Design tokens, colors, typography scale, spacing, radii
+ * 2. reset.css      — Modern accessible CSS reset
+ * 3. typography.css — Fast-food typography hierarchy & utilities
+ * 4. components.css — Reusable buttons, cards, badges, pills, skeletons, empty states
+ * 5. layout.css     — Mobile-first header, sticky category nav, main container, grid, footer
+ */
+
+@import "./variables.css";
+@import "./reset.css";
+@import "./typography.css";
+@import "./components.css";
+@import "./layout.css";
