@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>CHOP CHOP | Digital Menu</title>
+    <meta name="description" content="Official digital ordering for CHOP CHOP. Handcrafted stone-baked pizzas and street-food energy, made fresh for pickup and dine-in in Harare, Zimbabwe." />
+    <meta property="og:title" content="CHOP CHOP | Digital Menu" />
+    <meta property="og:description" content="Official digital ordering for CHOP CHOP. Handcrafted stone-baked pizzas and street-food energy, made fresh for pickup and dine-in in Harare, Zimbabwe." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#111215" />
+
+    <!-- Google Fonts: Plus Jakarta Sans (Premium Modern Geometric Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet" />
+
+    <!-- Pure Modular CSS (Zero build step, high performance) -->
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body>
+    <!-- Accessibility Skip Link -->
+    <a href="#main-content" class="skip-link" id="skip-to-content">Skip to menu</a>
+
+    <!-- Premium CHOP CHOP Launch Screen (App-like Cinematic Welcome Experience) -->
+    <div class="foodies-launch-screen chopchop-launch-screen" id="chopchop-launch-screen" role="status" aria-live="polite" aria-label="Launching CHOP CHOP Digital Menu">
+      <div class="launch-stage">
+        <!-- Prominent Brand Lockup with Animated Hearth Flame -->
+        <div class="launch-brand-wrap" id="launch-brand-wrap">
+          <div class="launch-brand-mark" id="launch-brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
+            </svg>
+            <span class="launch-glow-radial" aria-hidden="true"></span>
+          </div>
+
+          <h1 class="launch-brand-title">
+            CHOP <span class="launch-brand-accent">CHOP</span>
+          </h1>
+          <span class="launch-brand-rule" aria-hidden="true"></span>
+        </div>
+
+        <!-- Welcoming Typography with Smooth Cinematic Sequence -->
+        <div class="launch-message-box">
+          <p class="launch-welcome-text" id="launch-welcome-text">
+            WELCOME TO CHOP CHOP
+          </p>
+        </div>
+
+        <!-- Subtle Understated Progress Indicator Line -->
+        <div class="launch-progress-track" aria-hidden="true">
+          <div class="launch-progress-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Header: Restaurant Visual Identity (Dark Surface, Architectural, Stamped Knife Seal) -->
+    <header class="foodies-header chopchop-header" id="app-header">
+      <div class="foodies-header-container chopchop-header-container">
+        <!-- Brand Lockup -->
+        <a href="#" class="brand-identity" id="brand-home-link" aria-label="CHOP CHOP Grill House &amp; Coffee Shop">
+          <div class="brand-logo-mark" aria-hidden="true">
+            <!-- Circular Seal with Crossed Artisan Knives & Hearth Flame -->
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.6" stroke-dasharray="1 2.5"/>
+              <path d="M9 7l7 7m0 0l7-7m-7 7v10" stroke="currentColor" stroke-width="1.8"/>
+              <circle cx="16" cy="14" r="2" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="brand-text-lockup">
+            <span class="brand-name">CHOP <span class="brand-name-accent">CHOP</span></span>
+            <span class="brand-subtext">GRILL HOUSE &amp; COFFEE SHOP</span>
+          </div>
+        </a>
+
+        <!-- Refined Order Options Selector (Pickup • Dine-In) -->
+        <div class="header-order-options" id="header-order-options" role="region" aria-label="Order fulfillment options">
+          <span class="order-options-label">ORDER</span>
+          <div class="order-options-segmented" role="radiogroup" aria-label="Order fulfillment option">
+            <button type="button" class="order-opt-btn active" id="opt-pickup" role="radio" aria-checked="true" data-mode="pickup">
+              <span class="opt-pip" aria-hidden="true"></span>
+              <span class="opt-label">Pickup</span>
+            </button>
+            <span class="order-opt-sep" aria-hidden="true">•</span>
+            <button type="button" class="order-opt-btn" id="opt-dinein" role="radio" aria-checked="false" data-mode="dinein">
+              <span class="opt-pip" aria-hidden="true"></span>
+              <span class="opt-label">Dine-In</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sticky Category Navigation Bar (Real Chop Chop Grill House Categories) -->
+    <nav class="category-nav-section" id="category-navigation-bar" aria-label="Menu Categories">
+      <div class="category-nav-wrapper">
+        <ul class="category-nav-list" role="tablist" id="category-tabs-container">
+          <li role="presentation">
+            <button class="category-tab active" role="tab" id="tab-all" aria-selected="true" aria-controls="menu-items-container" data-category="all">ALL</button>
+          </li>
+          <li role="presentation">
+            <button class="category-tab" role="tab" id="tab-breakfast" aria-selected="false" aria-controls="menu-items-container" data-category="breakfast">BREAKFAST</button>
+          </li>
+          <li role="presentation">
+            <button class="category-tab" role="tab" id="tab-mains" aria-selected="false" aria-controls="menu-items-container" data-category="mains">MAINS &amp; STEAKS</button>
+          </li>
+          <li role="presentation">
+            <button class="category-tab" role="tab" id="tab-allday" aria-selected="false" aria-controls="menu-items-container" data-category="allday">ALL DAY</button>
+          </li>
+          <li role="presentation">
+            <button class="category-tab" role="tab" id="tab-burgers" aria-selected="false" aria-controls="menu-items-container" data-category="burgers">BURGERS</button>
+          </li>
+          <li role="presentation">
+            <button class="category-tab" role="tab" id="tab-platters" aria-selected="false" aria-controls="menu-items-container" data-category="platters">PLATTERS</button>
+          </li>
+          <li role="presentation">
+            <button class="category-tab" role="tab" id="tab-sides" aria-selected="false" aria-controls="menu-items-container" data-category="sides">SIDES</button>
+          </li>
+          <li role="presentation">
+            <button class="category-tab" role="tab" id="tab-pizza" aria-selected="false" aria-controls="menu-items-container" data-category="pizza">PIZZA</button>
+          </li>
+          <li role="presentation">
+            <button class="category-tab" role="tab" id="tab-salads" aria-selected="false" aria-controls="menu-items-container" data-category="salads">SALADS</button>
+          </li>
+          <li role="presentation">
+            <button class="category-tab" role="tab" id="tab-desserts" aria-selected="false" aria-controls="menu-items-container" data-category="desserts">TASTY TREATS</button>
+          </li>
+          <li role="presentation">
+            <button class="category-tab" role="tab" id="tab-drinks" aria-selected="false" aria-controls="menu-items-container" data-category="drinks">COFFEE &amp; DRINKS</button>
+          </li>
+          <li role="presentation">
+            <button class="category-tab" role="tab" id="tab-mocktails" aria-selected="false" aria-controls="menu-items-container" data-category="mocktails">MOCKTAILS</button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main Container: CHOP CHOP Menu Experience Flow -->
+    <main class="foodies-main chopchop-main" id="main-content">
+      <!-- Restaurant Menu Header (Classic, Restrained, Editorial Opening) -->
+      <section class="menu-intro-header" aria-label="CHOP CHOP Menu">
+        <div class="menu-intro-inner">
+          <!-- Small CHOP CHOP Brand Mark -->
+          <div class="menu-intro-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.6" stroke-dasharray="1 2.5"/>
+              <path d="M9 7l7 7m0 0l7-7m-7 7v10" stroke="currentColor" stroke-width="1.8"/>
+              <circle cx="16" cy="14" r="2" fill="currentColor"/>
+            </svg>
+          </div>
+
+          <!-- Editorial Title & Descriptor -->
+          <h1 class="menu-intro-brand">CHOP CHOP</h1>
+          <p class="menu-intro-subbrand">GRILL HOUSE &amp; COFFEE SHOP</p>
+
+          <!-- Hairline Menu Divider -->
+          <div class="menu-intro-divider" aria-hidden="true">
+            <span class="divider-line"></span>
+            <span class="divider-gem"></span>
+            <span class="divider-line"></span>
+          </div>
+
+          <!-- Menu Chapter Label -->
+          <p class="menu-intro-edition">OUR MENU</p>
+        </div>
+      </section>
+
+      <!-- Menu Items Container (Rendered dynamically with high visual hierarchy) -->
+      <div id="menu-items-container" role="region" aria-label="CHOP CHOP Menu Catalog">
+        <!-- Dynamic menu items rendered here -->
+      </div>
+    </main>
+
+    <!-- CHOP CHOP Restaurant Finale Footer (Quiet, Confident, Editorial Closing) -->
+    <footer class="foodies-footer chopchop-footer" id="app-footer">
+      <div class="footer-container">
+        <!-- 1. CHOP CHOP Brand Identity -->
+        <div class="footer-brand-section">
+          <div class="footer-brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.6" stroke-dasharray="1 2.5"/>
+              <path d="M9 7l7 7m0 0l7-7m-7 7v10" stroke="currentColor" stroke-width="1.8"/>
+              <circle cx="16" cy="14" r="2" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3 class="footer-brand-title">CHOP CHOP</h3>
+          <p class="footer-brand-subtitle">GRILL HOUSE &amp; COFFEE SHOP</p>
+        </div>
+
+        <div class="footer-divider" aria-hidden="true"></div>
+
+        <!-- 2. Hours & Location -->
+        <div class="footer-meta-section">
+          <div class="footer-hours">7:30 AM – 10:30 PM</div>
+          <div class="footer-location">Harare, Zimbabwe</div>
+        </div>
+
+        <div class="footer-divider" aria-hidden="true"></div>
+
+        <!-- 3. Copyright Line -->
+        <div class="footer-copyright-section">
+          <p class="footer-copyright">&copy; 2026 CHOP CHOP Zimbabwe</p>
+        </div>
+
+        <div class="footer-divider footer-divider-subtle" aria-hidden="true"></div>
+
+        <!-- 4. Warstreet Experience Model Attribution (Quiet Designer Signature) -->
+        <div class="footer-attribution-section">
+          <a 
+            href="https://wa.me/263779388560?text=Hi%2C%20I%20found%20the%20Warstreet%20Experience%20Model%20on%20the%20Chop%20Chop%20digital%20menu%20and%20I%27d%20like%20to%20know%20more." 
+            class="warstreet-attribution" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            aria-label="Powered by Warstreet Experience Model — learn more"
+          >
+            <!-- Subtle QR / Experience Inspired Geometric Mark -->
+            <span class="warstreet-mark" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                <rect x="2" y="2" width="4" height="4" stroke-width="1.2" rx="0.5"/>
+                <rect x="10" y="2" width="4" height="4" stroke-width="1.2" rx="0.5"/>
+                <rect x="2" y="10" width="4" height="4" stroke-width="1.2" rx="0.5"/>
+                <path d="M10 10h1.5v1.5H10zM12.5 10H14v4h-1.5zM10 12.5h2.5V14H10z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="warstreet-credit">
+              <span class="warstreet-prefix">POWERED BY</span>
+              <span class="warstreet-name">WARSTREET <span class="warstreet-model">EXPERIENCE MODEL</span></span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- CHOP CHOP Product View Modal (Accessible Dialog & Mobile Bottom Sheet) -->
+    <div 
+      class="product-modal-backdrop" 
+      id="product-view-modal" 
+      role="dialog" 
+      aria-modal="true" 
+      aria-hidden="true" 
+      aria-labelledby="modal-product-title"
+      tabindex="-1"
+    >
+      <div class="product-modal-card" id="product-modal-card">
+        <!-- Mobile Bottom Sheet Handle Bar -->
+        <div class="sheet-handle-bar" aria-hidden="true">
+          <span class="sheet-handle-pip"></span>
+        </div>
+
+        <!-- Close Button -->
+        <button 
+          type="button" 
+          class="modal-close-btn" 
+          id="btn-close-modal" 
+          aria-label="Close product view"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Large High-Quality Food Photograph -->
+        <div class="modal-media-wrap">
+          <img 
+            src="" 
+            alt="" 
+            id="modal-food-img" 
+            class="modal-food-photo" 
+            loading="eager" 
+            referrerPolicy="no-referrer" 
+          />
+          <div class="modal-media-gradient" aria-hidden="true"></div>
+        </div>
+
+        <!-- Modal Body Content -->
+        <div class="modal-content-body">
+          <!-- Category & Tag -->
+          <div class="modal-header-meta">
+            <span class="modal-category-tag" id="modal-category-badge">Pizza</span>
+          </div>
+
+          <!-- Product Title -->
+          <h2 class="modal-product-title" id="modal-product-title">Product Name</h2>
+
+          <!-- Appetising Description -->
+          <p class="modal-product-desc" id="modal-product-desc">
+            Product detailed appetising ingredients and description.
+          </p>
+
+          <!-- Pizza Size Options Section (Available Sizes with Exact Prices) -->
+          <div class="modal-sizes-section" id="modal-sizes-section">
+            <div class="modal-section-title-row">
+              <span class="modal-section-title">Available Sizes</span>
+              <span class="modal-section-hint">Select 1</span>
+            </div>
+            
+            <div class="modal-sizes-group" id="modal-sizes-group" role="radiogroup" aria-label="Available Pizza Sizes">
+              <!-- Dynamically populated: Regular, Medium, Large -->
+            </div>
+          </div>
+
+          <!-- Non-Pizza Price Display Section (For Steaks, Mains, Burgers, Platters) -->
+          <div class="modal-portion-section" id="modal-portion-section" style="display: none;">
+            <div class="portion-price-box">
+              <span class="portion-label">Item Price</span>
+              <span class="portion-value" id="modal-portion-price">$0.00</span>
+            </div>
+          </div>
+
+          <!-- Product Modifiers / Options Container (Doneness, Sides, Sauces, Basting, Flavors) -->
+          <div class="modal-modifiers-container" id="modal-modifiers-container">
+            <!-- Dynamically populated modifier option groups -->
+          </div>
+
+          <!-- Quantity Stepper Section -->
+          <div class="modal-quantity-section">
+            <div class="quantity-label-col">
+              <span class="quantity-title">Quantity</span>
+              <span class="quantity-subtext">Number of items</span>
+            </div>
+            <div class="quantity-stepper" role="group" aria-label="Item quantity">
+              <button 
+                type="button" 
+                class="btn-qty-step" 
+                id="btn-qty-minus" 
+                aria-label="Decrease quantity"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+              <span class="qty-count-display" id="qty-count-val" aria-live="polite">1</span>
+              <button 
+                type="button" 
+                class="btn-qty-step" 
+                id="btn-qty-plus" 
+                aria-label="Increase quantity"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Sticky Action Footer -->
+        <div class="modal-action-footer">
+          <button 
+            type="button" 
+            class="btn-add-to-order" 
+            id="btn-modal-add-to-order"
+          >
+            <span class="btn-add-label" id="btn-add-label">Add to Order</span>
+            <span class="btn-add-divider" aria-hidden="true">•</span>
+            <span class="btn-add-total" id="modal-calc-total">$4.00</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Elegant Floating Feedback Toast -->
+    <div class="foodies-toast chopchop-toast" id="chopchop-toast" role="status" aria-live="polite" aria-hidden="true">
+      <div class="toast-indicator" aria-hidden="true">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+        </svg>
+      </div>
+      <span class="toast-message" id="toast-message">Added to order</span>
+    </div>
+
+    <!-- Small, Elegant Sticky Cart Floating Button (Appears only when item count >= 1) -->
+    <div class="sticky-cart-container" id="sticky-cart-container" aria-hidden="true">
+      <button 
+        type="button" 
+        class="sticky-cart-btn" 
+        id="btn-sticky-cart" 
+        aria-label="View Order Cart"
+        aria-haspopup="dialog"
+        aria-controls="cart-drawer-modal"
+      >
+        <span class="sticky-cart-icon" aria-hidden="true">🛒</span>
+        <span class="sticky-cart-title">Order</span>
+        <span class="sticky-cart-bullet" aria-hidden="true">·</span>
+        <span class="sticky-cart-count" id="cart-btn-count">1 item</span>
+        <span class="sticky-cart-bullet" aria-hidden="true">·</span>
+        <span class="sticky-cart-total" id="cart-btn-total">$5</span>
+      </button>
+    </div>
+
+    <!-- Clean CHOP CHOP Order Drawer / Modal (Accessible Dialog & Bottom Sheet) -->
+    <div 
+      class="cart-modal-backdrop" 
+      id="cart-drawer-modal" 
+      role="dialog" 
+      aria-modal="true" 
+      aria-hidden="true" 
+      aria-labelledby="cart-modal-title"
+      tabindex="-1"
+    >
+      <div class="cart-drawer-card" id="cart-drawer-card">
+        <!-- Mobile Bottom Sheet Handle Bar -->
+        <div class="sheet-handle-bar" aria-hidden="true">
+          <span class="sheet-handle-pip"></span>
+        </div>
+
+        <!-- Cart Drawer Header -->
+        <div class="cart-drawer-header">
+          <div class="cart-header-title-wrap">
+            <span class="cart-header-icon" aria-hidden="true">🛒</span>
+            <div class="cart-header-headings">
+              <h2 class="cart-drawer-title" id="cart-modal-title">Review Order</h2>
+              <span class="cart-drawer-count-badge" id="cart-drawer-items-count">0 items</span>
+            </div>
+          </div>
+          <div class="cart-header-actions">
+            <button 
+              type="button" 
+              class="btn-clear-cart" 
+              id="btn-clear-cart" 
+              aria-label="Clear all items in cart"
+              title="Clear order"
+            >
+              Clear
+            </button>
+            <button 
+              type="button" 
+              class="cart-close-btn" 
+              id="btn-close-cart" 
+              aria-label="Close cart and continue browsing"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Fulfillment Mode Toggle Bar in Cart (Pickup • Dine-In) -->
+        <div class="cart-mode-bar" id="cart-mode-bar" role="region" aria-label="Order dining mode">
+          <div class="cart-mode-segmented" role="radiogroup" aria-label="Dining option">
+            <button 
+              type="button" 
+              class="cart-mode-btn active" 
+              id="cart-opt-pickup" 
+              role="radio" 
+              aria-checked="true" 
+              data-mode="pickup"
+            >
+              <span class="cart-mode-pip" aria-hidden="true"></span>
+              <span class="cart-mode-label">PICKUP</span>
+            </button>
+            <button 
+              type="button" 
+              class="cart-mode-btn" 
+              id="cart-opt-dinein" 
+              role="radio" 
+              aria-checked="false" 
+              data-mode="dinein"
+            >
+              <span class="cart-mode-pip" aria-hidden="true"></span>
+              <span class="cart-mode-label">DINE-IN</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dedicated Dine-In Table Number Experience Section -->
+        <section 
+          class="checkout-table-section" 
+          id="checkout-table-section" 
+          aria-label="Table number entry"
+          style="display: none;"
+        >
+          <div class="table-section-eyebrow">
+            <span class="table-eyebrow-tag">DINE-IN</span>
+            <span class="table-eyebrow-sep" aria-hidden="true">•</span>
+            <span class="table-eyebrow-title">WHERE ARE YOU SITTING?</span>
+          </div>
+
+          <!-- Digital Brass & Obsidian Table Marker -->
+          <div 
+            class="table-marker-card" 
+            id="table-marker-card" 
+            role="group" 
+            aria-labelledby="marker-card-label"
+          >
+            <!-- Authentic Tabletop Marker Corner Rivets -->
+            <span class="marker-rivet marker-rivet-tl" aria-hidden="true"></span>
+            <span class="marker-rivet marker-rivet-tr" aria-hidden="true"></span>
+            <span class="marker-rivet marker-rivet-bl" aria-hidden="true"></span>
+            <span class="marker-rivet marker-rivet-br" aria-hidden="true"></span>
+
+            <div class="marker-top-row">
+              <span class="marker-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M4 10h16M7 10v9M17 10v9M3 6h18a1 1 0 011 1v3H2V7a1 1 0 011-1z" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="marker-label" id="marker-card-label">TABLE</span>
+            </div>
+
+            <!-- Large Interactive Number Input Field -->
+            <div class="marker-input-wrap">
+              <label for="table-number-input" class="sr-only">Table number</label>
+              <input 
+                type="text" 
+                id="table-number-input" 
+                class="table-number-input" 
+                inputmode="numeric" 
+                pattern="[0-9]*" 
+                maxlength="4" 
+                autocomplete="off" 
+                autocorrect="off" 
+                autocapitalize="off" 
+                spellcheck="false" 
+                placeholder="—" 
+                aria-describedby="table-number-hint table-input-error"
+              />
+            </div>
+
+            <div class="marker-base-seal">
+              <span class="seal-line" aria-hidden="true"></span>
+              <span class="seal-text">CHOP CHOP DINE-IN</span>
+              <span class="seal-line" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <p class="table-number-hint" id="table-number-hint">
+            Enter your table number so we can bring your food to you.
+          </p>
+
+          <div class="table-error-alert" id="table-input-error" role="alert" style="display: none;">
+            <svg class="table-error-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            <span id="table-error-text">Please enter your table number.</span>
+          </div>
+        </section>
+
+        <!-- Cart Drawer Items Scrollable List -->
+        <div class="cart-items-scroll-area" id="cart-items-list" role="region" aria-label="Order items list">
+          <!-- Populated dynamically: Product image, name, size, unit price, quantity controls, remove, subtotal -->
+        </div>
+
+        <!-- Cart Drawer Summary & Actions Footer (Review View) -->
+        <div class="cart-drawer-footer" id="cart-drawer-footer">
+          <!-- Fulfillment Destination Bar -->
+          <div class="cart-fulfillment-strip" id="cart-fulfillment-strip">
+            <span class="fulfillment-badge-label">DESTINATION:</span>
+            <span class="fulfillment-badge-val" id="cart-fulfillment-val">PICKUP · COUNTER</span>
+          </div>
+
+          <div class="cart-total-row">
+            <div class="cart-total-label-wrap">
+              <span class="cart-total-main-label">ORDER TOTAL</span>
+              <span class="cart-total-tax-note">Including taxes</span>
+            </div>
+            <div class="cart-total-amount" id="cart-modal-grand-total">$0</div>
+          </div>
+          
+          <div class="cart-actions-column">
+            <!-- Primary Action: SEND ORDER • $TOTAL -->
+            <button 
+              type="button" 
+              class="btn-cart-send-order" 
+              id="btn-cart-send-order"
+            >
+              <span class="btn-send-label">SEND ORDER</span>
+              <span class="btn-send-dot" aria-hidden="true">•</span>
+              <span class="btn-send-price" id="btn-send-price">$0</span>
+            </button>
+
+            <!-- Secondary Action: CONTINUE BROWSING -->
+            <button 
+              type="button" 
+              class="btn-cart-continue" 
+              id="btn-cart-continue-browsing"
+            >
+              CONTINUE BROWSING
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirmation Step Overlay (Ready to Send?) -->
+        <div class="cart-confirm-view" id="cart-confirm-view" aria-hidden="true" style="display: none;">
+          <div class="cart-confirm-content">
+            <span class="confirm-badge">FINAL STEP</span>
+            <h3 class="confirm-heading">READY TO SEND?</h3>
+            <p class="confirm-subtext">Review your order before sending it to Chop Chop.</p>
+            
+            <div class="confirm-summary-box" id="confirm-summary-box">
+              <div class="confirm-summary-row" id="confirm-mode-row">
+                <span class="confirm-summary-label">Order Type</span>
+                <span class="confirm-summary-val" id="confirm-mode-val">Pickup</span>
+              </div>
+              <div class="confirm-summary-row" id="confirm-destination-row" style="display: none;">
+                <span class="confirm-summary-label">Table</span>
+                <span class="confirm-summary-val confirm-table-badge" id="confirm-table-val">Table 12</span>
+              </div>
+              <div class="confirm-summary-row">
+                <span class="confirm-summary-label">Items</span>
+                <span class="confirm-summary-val" id="confirm-items-val">0 items</span>
+              </div>
+              <div class="confirm-summary-row">
+                <span class="confirm-summary-label">Total to Pay</span>
+                <span class="confirm-summary-val confirm-total-highlight" id="confirm-total-val">$0</span>
+              </div>
+            </div>
+
+            <div class="confirm-error-alert" id="confirm-error-alert" role="alert" style="display: none;">
+              <span id="confirm-error-text">Unable to send order. Please try again.</span>
+            </div>
+
+            <div class="confirm-actions-group">
+              <button 
+                type="button" 
+                class="btn-confirm-send" 
+                id="btn-confirm-send"
+              >
+                <span id="btn-confirm-send-text">SEND ORDER</span>
+              </button>
+              <button 
+                type="button" 
+                class="btn-confirm-back" 
+                id="btn-confirm-back"
+              >
+                GO BACK
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success Order Sent Confirmation Screen -->
+        <div class="cart-success-view" id="cart-success-view" aria-hidden="true" style="display: none;">
+          <div class="cart-success-content">
+            <div class="success-icon-badge" aria-hidden="true">
+              <span class="success-checkmark">✓</span>
+            </div>
+
+            <h3 class="success-title">ORDER SENT</h3>
+
+            <!-- Dynamic Fulfillment Card (Dine-In Table vs Pickup Counter) -->
+            <div class="success-fulfillment-card" id="success-fulfillment-card">
+              <div class="success-fulfillment-badge" id="success-fulfillment-badge">
+                <span class="success-badge-icon" id="success-badge-icon" aria-hidden="true">🍽️</span>
+                <span class="success-badge-text" id="success-badge-text">TABLE 12</span>
+              </div>
+              <p class="success-fulfillment-msg" id="success-fulfillment-msg">
+                Your food will be brought to your table.
+              </p>
+            </div>
+
+            <div class="success-order-number-card">
+              <span class="order-number-label">ORDER NUMBER</span>
+              <span class="order-number-value" id="success-order-number">#1001</span>
+            </div>
+
+            <p class="success-status-note">
+              Your order is now being received by the Chop Chop kitchen team.
+            </p>
+
+            <button 
+              type="button" 
+              class="btn-success-back" 
+              id="btn-success-back-to-menu"
+            >
+              BACK TO MENU
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vanilla JavaScript Module (Zero build step) -->
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>

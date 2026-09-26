@@ -1,0 +1,6 @@
+{
+  "name": "CHOP CHOP — Street-Fired & Fresh",
+  "description": "Official digital ordering for CHOP CHOP. Handcrafted stone-baked pizzas and street-food energy, made fresh for pickup and dine-in in Harare, Zimbabwe.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
